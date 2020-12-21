@@ -6,6 +6,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,8 +66,10 @@ public class IssuesController {
 	}
 
 	@PostMapping(path = "/issues")
-	public void addIssues(@RequestBody Issue issue) {
+	public ResponseEntity<Object> addIssues(@RequestBody Issue issue) {
 		log.info("Adding new issue with issue id " + issue.getId());
 		this.service.addIssue(issue);
+		HttpHeaders responseHeaders = new HttpHeaders();
+		return new ResponseEntity<>(issue, responseHeaders, HttpStatus.CREATED);
 	}
 }
